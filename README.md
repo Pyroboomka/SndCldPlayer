@@ -13,11 +13,12 @@ Inspired by well-known [SoundRedux](http://soundredux.io)
 ```
 
 # TBD checklist
-[ ] Important : fix duplicate songs receiving (thx flattenChildren)
-[ ] Seeking in player component
-[ ] Infinite scrolling to get new songs
-[ ] Comments
-[ ] Users and single songs components
-[ ] Css => SASS
-[ ] Tests
-[ ] Surpass soundredux
+- [ ] Routing!
+- [ ] Important : fix duplicate songs receiving (thx flattenChildren)
+- [ ] Seeking in player component
+- [ ] Infinite scrolling to get new songs
+- [ ] Comments
+- [ ] Users and single songs components
+- [ ] Css => SASS
+- [ ] Tests
+- [ ] Surpass soundredux
