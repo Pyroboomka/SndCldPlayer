@@ -74,9 +74,6 @@ class Song extends Component {
             {description || ''}
           </div>
         </div>
-        <div className='songCard-waveform'>
-          <img src={waveform_url}></img>
-        </div>
       </div>
     )
   }
