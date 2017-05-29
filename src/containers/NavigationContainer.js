@@ -27,7 +27,7 @@ class Navigation extends Component {
             <span className='glyphicon glyphicon-bullhorn'></span>
           </div>
           <div className='logo-name'>
-            <a style={{color: 'white', textDecoration: 'none'}} href='/songs?q=chill'><h3>Sndcldplayer</h3></a>
+            <a style={{color: 'white', textDecoration: 'none'}} href='/songs'><h3>Sndcldplayer</h3></a>
           </div>
         </div>
         <div className='searchbar'>

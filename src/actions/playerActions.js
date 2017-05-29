@@ -11,8 +11,8 @@ export function setCurrentSong (index) {
 
 export function setCurrentPlaylist (playlist) {
   return (dispatch, getState) => {
-    const playlists = getState().playlists
-    const currentPlaylist = getState().player.currentPlaylist
+    const { playlists } = getState()
+    const { currentPlaylist } = getState().player
     if (playlist in playlists && currentPlaylist !== playlist) {
       dispatch({ type: SET_CURRENT_PLAYLIST, playlist })
     }
@@ -21,7 +21,7 @@ export function setCurrentPlaylist (playlist) {
 
 export function startPlayingSong (songId) {
   return (dispatch, getState) => {
-    let currentPagePlaylist = getState().router.location.search.slice(3)
+    let currentPagePlaylist = getState().router.location.search.slice(3) || 'chill'
     dispatch(setCurrentPlaylist(currentPagePlaylist))
     dispatch(setCurrentSong(songId))
   }

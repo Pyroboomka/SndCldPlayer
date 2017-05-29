@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { Route } from 'react-router'
+import { Route, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import './index.css'
 import { history, configureStore } from './store/configureStore'
@@ -13,7 +13,10 @@ const store = configureStore()
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Route path='/songs/' component={App} />
+      <div>
+        <Route path='/songs' component={App} />
+        <Redirect from='/' to='/songs' />
+      </div>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')
