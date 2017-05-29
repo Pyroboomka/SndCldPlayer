@@ -1,5 +1,5 @@
 import { fetchNewSongs } from './songActions.js'
-import { composePlaylistURL } from '../utils/urlUtils'
+import { composePlaylistURL, composeURLWithDates } from '../utils/urlUtils'
 export const RECEIVE_NEXTURL = 'RECEIVE_NEXTURL'
 export const RECEIVE_PLAYLIST = 'RECEIVE_PLAYLIST'
 export const REQUEST_PLAYLIST = 'REQUEST_PLAYLIST'
@@ -20,17 +20,17 @@ export function requestPlaylist (tag) {
 
 export function fetchMoreSongs (playlist) {
   return (dispatch, getState) => {
-    const playlists = getState().playlists
+    const { playlists } = getState()
     let url = playlists[playlist].next_href
     dispatch(fetchNewSongs(playlist, url))
   }
 }
 
-export function fetchPlaylistIfNeeded (tag) {
+export function fetchPlaylistIfNeeded (tag, timeframe) {
   return (dispatch, getState) => {
     const { playlists } = getState()
     if (shouldFetchSongs(tag, playlists)) {
-      let url = composePlaylistURL(tag)
+      let url = composeURLWithDates(tag, timeframe)
       dispatch(fetchNewSongs(tag, url))
     }
   }

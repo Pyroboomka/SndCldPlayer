@@ -14,13 +14,18 @@ class PlayerContainer extends Component {
 const mapStateToProps = (state) => {
   const { songs, users } = state.entities
   const { player, playlists } = state
-  const playlist = state.router.location.search.slice(3)
+  const searchString = state.router.location.search || '?q=chill&time=7'
+  const searchRegExp = /(\?q=.+)&(time=[0-9]{1,})/g
+  const matchGroups = searchRegExp.exec(searchString)
+  const playlist = matchGroups[1].slice(3)
+  const timeframe = matchGroups[2].slice(5)
   return {
     songs,
     users,
     playlists,
     playlist,
-    player
+    player,
+    timeframe
   }
 }
 export default connect(mapStateToProps)(PlayerContainer)

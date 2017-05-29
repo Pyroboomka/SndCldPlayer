@@ -36,7 +36,7 @@ class Songs extends React.Component {
     } else {
       return (
         <div className='row'>
-          <div className='col-md-8 songsContainer'>
+          <div className='col-lg-8 col-md-12 col-xs-12 songsContainer'>
             {this.renderPlaylistSongs()}
           </div>
         </div>

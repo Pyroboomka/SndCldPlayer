@@ -11,7 +11,7 @@ class App extends Component {
       case ('/songs'):
         return <PlaylistContainer />
       default:
-        return <div><h1>Sorry, 404, plz don't hurt me</h1></div>
+        return <div><h1>Sorry, 404, plz do not hurt me</h1></div>
     }
   }
 

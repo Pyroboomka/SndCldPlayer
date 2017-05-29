@@ -14,7 +14,7 @@ class Navigation extends Component {
       let tag = e.currentTarget.value.trim()
       if (tag !== '') {
         // This probably shoudn't work like this, RTFM later
-        dispatch(push(`/songs?q=${tag}`))
+        dispatch(push(`/songs?q=${tag}&time=90`))
       }
     }
   }

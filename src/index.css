@@ -61,7 +61,8 @@ body {
 }
 .songCard-image {
   display: flex;
-  flex: 1;
+  height: 100px;
+  width: 100px;
   margin: 5px 20px 5px 5px;
 }
 .songCard-image-playbutton {

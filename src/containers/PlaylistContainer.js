@@ -6,16 +6,16 @@ import { fetchMoreSongs, fetchPlaylistIfNeeded } from '../actions/playlistAction
 
 class Playlist extends Component {
   componentWillMount () {
-    const { dispatch, playlists, playlist } = this.props
+    const { dispatch, playlists, playlist, timeframe } = this.props
     if (!(playlist in playlists)) {
-      dispatch(fetchPlaylistIfNeeded(playlist))
+      dispatch(fetchPlaylistIfNeeded(playlist, timeframe))
     }
   }
 
   componentWillReceiveProps (nextProps) {
     const { dispatch, playlist } = this.props
     if (playlist !== nextProps.playlist) {
-      dispatch(fetchPlaylistIfNeeded(nextProps.playlist))
+      dispatch(fetchPlaylistIfNeeded(nextProps.playlist, nextProps.timeframe))
     }
   }
 
@@ -38,13 +38,17 @@ class Playlist extends Component {
 const mapStateToProps = (state) => {
   const { songs, users } = state.entities
   const { playlists, player } = state
-  const { location } = state.router
-  const playlist = location.search.slice(3) || 'chill'
+  const searchString = state.router.location.search || '?q=chill&time=7'
+  const searchRegExp = /(\?q=.+)&(time=[0-9]{1,})/g
+  const matchGroups = searchRegExp.exec(searchString)
+  const playlist = matchGroups[1].slice(3)
+  const timeframe = matchGroups[2].slice(5)
   return {
     songs,
     users,
     playlists,
     playlist,
+    timeframe,
     player
   }
 }
