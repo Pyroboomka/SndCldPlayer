@@ -3,6 +3,7 @@ import { composePlaylistURL, composeURLWithDates } from '../utils/urlUtils'
 export const RECEIVE_NEXTURL = 'RECEIVE_NEXTURL'
 export const RECEIVE_PLAYLIST = 'RECEIVE_PLAYLIST'
 export const REQUEST_PLAYLIST = 'REQUEST_PLAYLIST'
+export const CHANGE_TIMEFRAME = 'CHANGE_TIMEFRAME'
 
 export function receiveNextURL (nextURL) {
   return {
@@ -43,6 +44,12 @@ export function receivePlaylist (entities, tag, songsIDs, nextHref) {
     tag,
     songsIDs,
     nextHref
+  }
+}
+export function changeTimeframe (newTimeframe) {
+  return {
+    type: CHANGE_TIMEFRAME,
+    newTimeframe
   }
 }
 

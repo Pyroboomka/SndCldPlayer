@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { parseSearch } from '../utils/routerUtils'
 import Player from '../components/Player'
 class PlayerContainer extends Component {
   render () {
@@ -15,16 +16,15 @@ const mapStateToProps = (state) => {
   const { songs, users } = state.entities
   const { player, playlists } = state
   const searchString = state.router.location.search || '?q=chill&time=7'
-  const searchRegExp = /(\?q=.+)&(time=[0-9]{1,})/g
-  const matchGroups = searchRegExp.exec(searchString)
-  const playlist = matchGroups[1].slice(3)
-  const timeframe = matchGroups[2].slice(5)
+  let parsedLocation = parseSearch(searchString)
+  const playlist = parsedLocation[0]
+  const timeframe = parsedLocation[1]
   return {
     songs,
     users,
     playlists,
-    playlist,
     player,
+    playlist,
     timeframe
   }
 }

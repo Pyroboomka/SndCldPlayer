@@ -19,10 +19,9 @@ export function setCurrentPlaylist (playlist) {
   }
 }
 
-export function startPlayingSong (songId) {
+export function startPlayingSong (playlist, songId) {
   return (dispatch, getState) => {
-    let currentPagePlaylist = getState().router.location.search.slice(3) || 'chill'
-    dispatch(setCurrentPlaylist(currentPagePlaylist))
+    dispatch(setCurrentPlaylist(playlist))
     dispatch(setCurrentSong(songId))
   }
 }

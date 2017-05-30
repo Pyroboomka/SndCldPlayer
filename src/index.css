@@ -27,9 +27,32 @@ body {
   text-align: center;
   padding: 0 10px 0 10px;
 }
+.logo-name a {
+  text-decoration: none;
+  color: #fff;
+}
 .searchbar {
   display: flex;
   padding: 0 10px 0 10px;
+}
+.searchbar-timeframes {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  padding: 0 10px 0 10px;
+}
+.searchbar-timeframes-option {
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 5px 0 5px;
+  text-decoration: none;
+  color: #fff;
+}
+.searchbar-timeframes-label {
+  font-size: 18px;
+}
+.searchbar-active {
+  color: greenyellow;
 }
 .searchbar-label {
   color: #fff;
@@ -102,14 +125,6 @@ body {
 .songCard-waveform img {
   width: 250px;
   height: 110px
-}
-.playerWrapper {
-  position: fixed;
-  bottom: 0;
-  /*margin-right: 17px scrollbar!*/
-  height: 50px;
-  background-color: #3a3f41;
-  color: #fff;
 }
 .player {
   position: fixed;

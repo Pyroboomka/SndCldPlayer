@@ -30,7 +30,7 @@ class Song extends Component {
     const { dispatch, songData, playlistSongs, player, playlist } = this.props
     let songIndex = playlistSongs.indexOf(songData.id)
     if (player.currentSongIndex !== songIndex || playlist !== player.currentPlaylist) {
-      dispatch(startPlayingSong(songIndex))
+      dispatch(startPlayingSong(playlist, songIndex))
     } else {
       const playerNode = document.getElementsByTagName('audio')[0]
       if (playerNode) {
@@ -43,7 +43,7 @@ class Song extends Component {
   render () {
     const { songData, playlistSongs, player, playlist } = this.props
     const isBorderActive = (playlistSongs.indexOf(songData.id) === player.currentSongIndex) && (player.currentPlaylist === playlist)
-    const { artwork_url, title, likes_count, comment_count, playback_count, description, waveform_url } = songData
+    const { artwork_url, title, likes_count, comment_count, playback_count, description } = songData
     const { username } = this.props.userData
     return (
       <div className={`songCard ` + (this.state.isPlaying || isBorderActive ? 'activeSong' : '')}>

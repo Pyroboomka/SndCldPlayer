@@ -98,9 +98,6 @@ class Player extends Component {
     const { dispatch, playlists } = this.props
     const { currentSongIndex, currentPlaylist } = this.props.player
     let maxPlaylistLength = playlists[currentPlaylist].songs.length - 1
-    /*
-    * Fetch next songs here?
-    */
     let newSongIndex = ((currentSongIndex + 1) >= maxPlaylistLength) ? maxPlaylistLength : currentSongIndex + 1
     dispatch(setCurrentSong(newSongIndex))
   }

@@ -7,11 +7,10 @@ class Songs extends React.Component {
     const { songs, users, playlists, player } = this.props
     const playlist = this.props.playlist
     const playlistSongs = playlists[playlist].songs
-    const mappedSongs = [];
-    playlistSongs.map(item => {
+    return playlistSongs.map(item => {
       let songData = songs[item]
       let userData = users[songData.user_id]
-      mappedSongs.push(
+      return (
         <Song
           key={songData.id}
           songData={songData}
@@ -19,9 +18,9 @@ class Songs extends React.Component {
           playlist={this.props.playlist}
           playlistSongs={playlistSongs}
           player={player}
-          dispatch={this.props.dispatch} />)
+          dispatch={this.props.dispatch} />
+      )
     })
-    return mappedSongs
   }
 
   render () {

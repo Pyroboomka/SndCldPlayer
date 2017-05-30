@@ -1,12 +1,12 @@
-import { RECEIVE_PLAYLIST, REQUEST_PLAYLIST } from '../actions/playlistActions'
+import { RECEIVE_PLAYLIST, REQUEST_PLAYLIST, CHANGE_TIMEFRAME } from '../actions/playlistActions'
 
-const initialPlaylistsState = {
+const initialPlaylistState = {
   isFetching: false,
   songs: [],
   next_href: ''
 }
 
-function playlist (state = initialPlaylistsState, action) {
+function playlist (state = initialPlaylistState, action) {
   switch (action.type) {
     case RECEIVE_PLAYLIST:
       return Object.assign({}, state, {
@@ -22,8 +22,10 @@ function playlist (state = initialPlaylistsState, action) {
       return state
   }
 }
-
-function playlists (state = {}, action) {
+const initialPlaylistsState = {
+  currentTimeframe: 7
+}
+function playlists (state = initialPlaylistsState, action) {
   switch (action.type) {
     case RECEIVE_PLAYLIST:
       return Object.assign({}, state, {
@@ -33,6 +35,9 @@ function playlists (state = {}, action) {
       return Object.assign({}, state, {
         [action.tag]: playlist(state[action.tag], action)
       })
+    case CHANGE_TIMEFRAME: {
+      return Object.assign({}, state, { currentTimeframe: action.newTimeframe })
+    }
     default:
       return state
   }
