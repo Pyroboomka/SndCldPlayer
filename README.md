@@ -11,6 +11,8 @@ Inspired by well-known [SoundRedux](http://soundredux.io)
  $ npm run start
  $ echo 'Have fun'
 ```
+#Live
+Latest stable build can be seen in action @ [https://sndcldplayer.herokuapp.com](https://sndcldplayer.herokuapp.com)
 
 # TBD checklist
 - [x] Routing! //somewhat, still needs further improvements
