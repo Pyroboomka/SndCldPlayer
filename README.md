@@ -11,13 +11,14 @@ Inspired by well-known [SoundRedux](http://soundredux.io)
  $ npm run start
  $ echo 'Have fun'
 ```
-#Live
+# Live
 Latest stable build can be seen in action @ [https://sndcldplayer.herokuapp.com](https://sndcldplayer.herokuapp.com)
 
 # TBD checklist
 - [x] Routing! //somewhat, still needs further improvements
+- [ ] Important: make a (dis)graceful degradation of Songs/Player for phone width
 - [ ] Important : fix duplicate songs receiving (thx flattenChildren)
-- [ ] Seeking in player component
+- [x] Seeking in player component
 - [ ] Infinite scrolling to get new songs
 - [ ] Comments
 - [ ] Users and single songs components

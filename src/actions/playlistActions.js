@@ -1,5 +1,5 @@
 import { fetchNewSongs } from './songActions.js'
-import { composePlaylistURL, composeURLWithDates } from '../utils/urlUtils'
+import { composeURLWithDates } from '../utils/urlUtils'
 export const RECEIVE_NEXTURL = 'RECEIVE_NEXTURL'
 export const RECEIVE_PLAYLIST = 'RECEIVE_PLAYLIST'
 export const REQUEST_PLAYLIST = 'REQUEST_PLAYLIST'

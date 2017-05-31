@@ -17,8 +17,8 @@ const mapStateToProps = (state) => {
   const { player, playlists } = state
   const searchString = state.router.location.search || '?q=chill&time=7'
   let parsedLocation = parseSearch(searchString)
-  const playlist = parsedLocation[0]
   const timeframe = parsedLocation[1]
+  const playlist = parsedLocation[0] + timeframe
   return {
     songs,
     users,
