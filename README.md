@@ -16,11 +16,11 @@ Latest stable build can be seen in action @ [https://sndcldplayer.herokuapp.com]
 
 # TBD checklist
 - [x] Routing! //somewhat, still needs further improvements
-- [ ] Important: make a (dis)graceful degradation of Songs/Player for phone width
+- [ ] Moved to Important! Css => SASS. This is getting out of hand pretty quickly.
+- [ ] Important: Rethink if I should follow DRY here with mobile components.
 - [ ] Important : fix duplicate songs receiving (thx flattenChildren)
 - [x] Seeking in player component
 - [ ] Infinite scrolling to get new songs
 - [ ] Comments
 - [ ] Users and single songs components
-- [ ] Css => SASS
 - [ ] Surpass soundredux
