@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setWidth } from '../actions/environmentActions'
 import PlaylistContainer from './PlaylistContainer'
 import NavigationContainer from './NavigationContainer'
 import PlayerContainer from './PlayerContainer'
 
 class App extends Component {
+  componentWillMount () {
+    const { dispatch } = this.props
+    dispatch(setWidth(window.innerWidth))
+  }
+
   renderContent () {
     const { location } = this.props.router
     switch (location.pathname) {

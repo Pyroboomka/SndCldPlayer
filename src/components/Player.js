@@ -220,7 +220,7 @@ class Player extends Component {
   handleVolumeWheel (e) {
     e.preventDefault()
     let volumeDiff = -e.deltaY / 10000 * 5
-    let newVolume = this.state.volume += volumeDiff
+    let newVolume = this.state.volume + volumeDiff
     if (newVolume > 1) {
       newVolume = 1
     }
@@ -256,7 +256,8 @@ class Player extends Component {
       <div className='player'>
         <audio
           ref='player'
-          src={composeSongStreamURL(curSong.stream_url)}></audio>
+          src={composeSongStreamURL(curSong.stream_url)}>
+        </audio>
         <div
           className='player-songIcon'
           style={{'backgroundImage': `url(${composePlayerSongImageURL(curSong.artwork_url)})`}} />
