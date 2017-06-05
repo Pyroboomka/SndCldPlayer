@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { togglePlayer, setCurrentSong } from '../actions/playerActions'
+import React from 'react'
 import ReactDOM from 'react-dom'
+import Player from './Player'
 import { formatPlayerDuration, composeSongStreamURL, composePlayerSongImageURL } from '../utils/urlUtils'
 
-class MobilePlayer extends Component {
+class MobilePlayer extends Player {
   constructor (props) {
     super(props)
     this.state = {
@@ -13,12 +13,6 @@ class MobilePlayer extends Component {
       currentTime: 0,
       duration: 0
     }
-    this.toggleMusic = this.toggleMusic.bind(this)
-    this.previousSong = this.previousSong.bind(this)
-    this.nextSong = this.nextSong.bind(this)
-    this.handleLoadedMetaData = this.handleLoadedMetaData.bind(this)
-    this.handleTimeUpdate = this.handleTimeUpdate.bind(this)
-    this.handleEnded = this.handleEnded.bind(this)
   }
   componentDidMount () {
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
@@ -29,66 +23,6 @@ class MobilePlayer extends Component {
 
   componentDidUpdate () {
     this.checkIfPlayerShouldPlay()
-  }
-
-  checkIfPlayerShouldPlay () {
-    const { isPlaying } = this.props.player
-    const playerNode = ReactDOM.findDOMNode(this.refs.player)
-    if (isPlaying && playerNode.currentTime === 0) {
-      playerNode.play()
-    }
-  }
-  handleLoadedMetaData () {
-    const playerNode = ReactDOM.findDOMNode(this.refs.player)
-    const duration = Math.floor(playerNode.duration)
-    this.setState({
-      duration: duration
-    })
-  }
-
-  handleTimeUpdate () {
-    if (this.state.isSeeking === true) {
-      return
-    }
-    const playerNode = ReactDOM.findDOMNode(this.refs.player)
-    let currentTime = Math.floor(playerNode.currentTime)
-    if (currentTime !== this.state.currentTime) {
-      this.setState({
-        currentTime: currentTime
-      })
-    }
-  }
-
-  handleEnded () {
-    if (this.state.repeat === true) {
-      const playerNode = ReactDOM.findDOMNode(this.refs.player)
-      playerNode.currentTime = 0
-    } else {
-      this.nextSong()
-    }
-  }
-
-  toggleMusic () {
-    const { dispatch } = this.props
-    const { isPlaying } = this.props.player
-    const playerNode = ReactDOM.findDOMNode(this.refs.player)
-    isPlaying ? playerNode.pause() : playerNode.play()
-    dispatch(togglePlayer())
-  }
-
-  previousSong () {
-    const { dispatch } = this.props
-    const { currentSongIndex } = this.props.player
-    let newSongIndex = ((currentSongIndex - 1) >= 0) ? currentSongIndex - 1 : 0
-    dispatch(setCurrentSong(newSongIndex))
-  }
-
-  nextSong () {
-    const { dispatch, playlists } = this.props
-    const { currentSongIndex, currentPlaylist } = this.props.player
-    let maxPlaylistLength = playlists[currentPlaylist].songs.length - 1
-    let newSongIndex = ((currentSongIndex + 1) >= maxPlaylistLength) ? maxPlaylistLength : currentSongIndex + 1
-    dispatch(setCurrentSong(newSongIndex))
   }
 
   render () {
@@ -129,5 +63,4 @@ class MobilePlayer extends Component {
     )
   }
 }
-
 export default MobilePlayer
