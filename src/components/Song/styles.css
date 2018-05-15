@@ -1,0 +1,64 @@
+.songCard {
+  height: 120px;
+  width: inherit;
+  display:flex;
+  flex: 1;
+  margin-top: 10px;
+  border: 2px rgb(212, 212, 212) solid
+}
+.activeSong {
+  border: 2px greenyellow solid;
+}
+.songCard-active {
+  display:flex;
+  margin-top: 10px;
+  border: 2px greenyellow solid;
+}
+.songCard-image {
+  display: flex;
+  flex: none;
+  width: 100px;
+  height: 100px;
+  margin: 8px 20px 8px 8px;
+}
+.songCard-image-playbutton {
+  width: 100%;
+  font-size: 40px;
+  opacity: 0;
+}
+.songCard-image-playbutton:hover {
+  display:flex;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.85);
+  font-size: 40px;
+  color: #00bbbb;
+  opacity: 0.85;
+}
+.songCard-image-playbutton i {
+  font-size: 64px;
+  align-self: center;
+}
+
+.songCard-info {
+  padding: 8px 8px 8px 0px;
+}
+
+.songCard-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.songCard-info-description {
+  font-size: 12px;
+  opacity: 0.5;
+  max-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.songCard-info-stats {
+  display:flex;
+}
+.songCard-info-stats div {
+  margin-left: 5px;
+}

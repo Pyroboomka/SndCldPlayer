@@ -5,23 +5,24 @@ import Player from '../components/Player'
 import MobilePlayer from '../components/MobilePlayer'
 
 class PlayerContainer extends Component {
-  render () {
+  render() {
     const { player, env } = this.props
     if (player.isPlaying || player.currentPlaylist !== '') {
       if (env.width > 750) {
         return <Player {...this.props} />
-      } else {
-        return <MobilePlayer {...this.props} />
       }
-    } else return null
+      return <MobilePlayer {...this.props} />
+    }
+    return null
   }
 }
+
 const mapStateToProps = (state) => {
   const { songs, users } = state.entities
   const { player, playlists } = state
   const env = state.environment
   const searchString = state.router.location.search || '?q=chill&time=7'
-  let parsedLocation = parseSearch(searchString)
+  const parsedLocation = parseSearch(searchString)
   const timeframe = parsedLocation[1]
   const playlist = parsedLocation[0] + timeframe
   return {
@@ -31,7 +32,8 @@ const mapStateToProps = (state) => {
     playlists,
     player,
     playlist,
-    timeframe
+    timeframe,
   }
 }
+
 export default connect(mapStateToProps)(PlayerContainer)

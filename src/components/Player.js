@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { togglePlayer, setCurrentSong } from '../actions/playerActions'
 import ReactDOM from 'react-dom'
+import { togglePlayer, setCurrentSong } from '../actions/player'
 import { formatPlayerDuration, composeSongStreamURL, composePlayerSongImageURL } from '../utils/urlUtils'
 
 class Player extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isPlaying: false,
@@ -36,7 +36,7 @@ class Player extends Component {
     this.handleVolumeMouseout = this.handleVolumeMouseout.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
     playerNode.addEventListener('loadedmetadata', this.handleLoadedMetaData)
     playerNode.addEventListener('timeupdate', this.handleTimeUpdate)

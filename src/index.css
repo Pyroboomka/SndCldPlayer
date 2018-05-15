@@ -66,64 +66,8 @@ body {
   background-color: transparent;
   padding: 0 10px 0 10px;
 }
-.songsContainer {
-  padding-bottom: 70px;
-}
-.songCard {
-  display:flex;
-  flex: 1;
-  margin-top: 10px;
-  border: 2px grey solid
-}
-.activeSong {
-  border: 2px greenyellow solid;
-}
-.songCard-active {
-  display:flex;
-  margin-top: 10px;
-  border: 2px greenyellow solid;
-}
-.songCard-image {
-  display: flex;
-  flex: none;
-  width: 100px;
-  height: 100px;
-  margin: 5px 20px 5px 5px;
-}
-.songCard-image-playbutton {
-  width: 100%;
-  font-size: 40px;
-  opacity: 0;
-}
-.songCard-image-playbutton:hover {
-  display:flex;
-  justify-content: center;
-  background-color: rgba(0,0,0,0.85);
-  font-size: 40px;
-  color: #00bbbb;
-  opacity: 0.85;
-}
-.songCard-image-playbutton span {
-  align-self: center;
-}
-.songCard-info {
-  display: flex;
-  flex: 65;
-  flex-direction: column;
-  max-width: 375px;
-}
-.songCard-info-description {
-  font-size: 12px;
-  opacity: 0.5;
-  max-height: 30px;
-  overflow: hidden
-}
-.songCard-info-stats {
-  display:flex;
-}
-.songCard-info-stats div {
-  margin-left: 5px;
-}
+
+
 .player {
   position: fixed;
   bottom: 0;
@@ -137,6 +81,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 .player-songIcon {
   margin-top: 1.5px; /*i feel dirty*/
   height: 47px;

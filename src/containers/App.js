@@ -1,37 +1,40 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setWidth } from '../actions/environmentActions'
+import { push as _push } from 'react-router-redux'
+import { updateEnvironment } from '../actions/environment'
 import PlaylistContainer from './PlaylistContainer'
 import NavigationContainer from './NavigationContainer'
 import PlayerContainer from './PlayerContainer'
 
 class App extends Component {
-  componentWillMount () {
-    const { dispatch } = this.props
-    dispatch(setWidth(window.innerWidth))
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions)
+    this.props.updateEnvironment(window.innerWidth, window.innerHeight);
   }
 
-  renderContent () {
-    const { location } = this.props.router
-    switch (location.pathname) {
-      case ('/songs'):
-        return <PlaylistContainer />
-      default:
-        return <div><h1>Sorry, 404, plz do not hurt me</h1></div>
-    }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions)
   }
 
-  render () {
+  updateDimensions = () => {
+    this.props.updateEnvironment(window.innerWidth, window.innerHeight);
+  }
+
+  render() {
     return (
-      <div className='container'>
+      <div className="container-fluid">
         <NavigationContainer />
-        {this.renderContent()}
+        <PlaylistContainer match={this.props.match} />
         <PlayerContainer />
       </div>
     )
   }
 }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    state,
+    ownProps,
+  }
+}
 
-const mapStateToProps = state => state
-
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, { updateEnvironment, _push })(App)

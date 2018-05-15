@@ -3,18 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "react-scripts": "1.0.11",
+    "react-app-rewire-less": "^2.1.1",
+    "react-app-rewired": "^1.5.0"
   },
   "dependencies": {
-    "history": "^4.6.1",
+    "history": "^4.7.2",
     "lodash": "^4.17.4",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-redux": "^5.0.4",
-    "react-router": "^4.1.1",
-    "react-router-redux": "^5.0.0-alpha.6",
-    "redux": "^3.6.0",
+    "normalizr": "^3.2.4",
+    "ramda": "^0.25.0",
+    "react": "^16.0.0",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "react-virtualized": "^9.18.5",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.16.0",
     "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1",
     "soundcloud": "^3.1.2"
   },
   "scripts": {

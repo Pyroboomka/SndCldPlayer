@@ -1,73 +1,77 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
-import { push } from 'react-router-redux'
-import { changeTimeframe } from '../actions/playlistActions'
+import { push as _push } from 'react-router-redux'
+import { getCurrentTimeframe } from '../reducers/selectors'
+import { changeTimeframe } from '../actions/playlist'
+
+const TIMEFRAMES = [ 7, 14, 30, 90 ]
 
 class Navigation extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
-  handleInputChange (e) {
+  handleInputChange(e) {
     if (e.charCode === 13) {
-      const { dispatch } = this.props
-      const { currentTimeframe } = this.props.playlists
-      let tag = e.currentTarget.value.trim()
+      const { timeframe } = this.props
+      const tag = e.currentTarget.value.trim()
       if (tag !== '') {
         // This probably shoudn't work like this, RTFM later
-        dispatch(push(`/songs?q=${tag}&time=${currentTimeframe}`))
+        this.props._push(`/songs/${tag}/${timeframe}`)
       }
     }
   }
 
-  handleTimeframeChange (newTimeframe) {
-    const { dispatch } = this.props
-    const { currentTimeframe } = this.props.playlists
-    if (currentTimeframe !== newTimeframe) {
-      dispatch(changeTimeframe(newTimeframe))
+  handleTimeframeChange(newTimeframe) {
+    const { timeframe } = this.props
+    if (timeframe !== newTimeframe) {
+      this.props.changeTimeframe(newTimeframe)
     }
   }
 
-  renderTimeframes () {
-    const { currentTimeframe } = this.props.playlists
-    const timeframes = [7, 14, 30, 90];
-    return timeframes.map(number =>
-      <div key={number}
-        className={`searchbar-timeframes-option ${currentTimeframe === number ? 'searchbar-active' : ''}`}
-        style={{}}
-        onClick={this.handleTimeframeChange.bind(this, number)}>
-        {number}
-      </div>)
+  renderTimeframes() {
+    const { timeframe } = this.props
+    return TIMEFRAMES.map(item => (
+      <div key={item}
+        className={`searchbar-timeframes-option${timeframe === item ? ' searchbar-active' : ''}`}
+        onClick={() => this.handleTimeframeChange(item)}>
+        {item}
+      </div>))
   }
 
-  render () {
+  render() {
     return (
-      <div className='header'>
-        <div className='logo'>
-          <div className='logo-icon'>
-            <span className='glyphicon glyphicon-bullhorn'></span>
+      <div className="header">
+        <div className="logo">
+          <div className="logo-icon">
+            <span className="glyphicon glyphicon-bullhorn" />
           </div>
-          <div className='logo-name'>
-            <a href='/songs'><h3>Sndcldplayer</h3></a>
+          <div className="logo-name">
+            <a href="/songs"><h3>Sndcldplayer</h3></a>
           </div>
         </div>
-        <div className='searchbar'>
-          <div className='searchbar-timeframes'>
+        <div className="searchbar">
+          <div className="searchbar-timeframes">
             {this.renderTimeframes()}
-            <span className='searchbar-timeframes-label'>days old</span>
+            <span className="searchbar-timeframes-label">days old</span>
           </div>
-          <div className='searchbar-label'>
-            <span className='glyphicon glyphicon-search'></span>
+          <div className="searchbar-label">
+            <span className="glyphicon glyphicon-search" />
           </div>
-          <div className='searchbar-input'>
-            <input onKeyPress={this.handleInputChange} type='text' className='form-control' placeholder='tag goes here' />
+          <div className="searchbar-input">
+            <input onKeyPress={this.handleInputChange} type="text" className="form-control" placeholder="Search" />
           </div>
         </div>
       </div>
     )
   }
 }
-const mapStateToProps = state => state
 
-export default connect(mapStateToProps)(Navigation)
+const mapStateToProps = (state) => {
+  return {
+    timeframe: getCurrentTimeframe(state),
+  }
+}
+
+export default connect(mapStateToProps, { _push, changeTimeframe })(Navigation)
