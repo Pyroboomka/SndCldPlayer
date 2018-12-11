@@ -1,39 +1,22 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
 import { togglePlayer, setCurrentSong } from '../actions/player'
+import { parseSearch } from '../utils/routerUtils'
 import { formatPlayerDuration, composeSongStreamURL, composePlayerSongImageURL } from '../utils/urlUtils'
 
 class Player extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isPlaying: false,
-      volume: 0.5,
-      muted: false,
-      repeat: false,
-      shuffle: false,
-      currentTime: 0,
-      duration: 0,
-      isSeeking: false,
-      seekStartXDefault: 0,
-      volumeStartX: 0
-    }
-    this.toggleMusic = this.toggleMusic.bind(this)
-    this.nextSong = this.nextSong.bind(this)
-    this.previousSong = this.previousSong.bind(this)
-    this.handleLoadedMetaData = this.handleLoadedMetaData.bind(this)
-    this.handleTimeUpdate = this.handleTimeUpdate.bind(this)
-    this.handleEnded = this.handleEnded.bind(this)
-    this.toggleRepeat = this.toggleRepeat.bind(this)
-    this.handleKeypress = this.handleKeypress.bind(this)
-    this.handleSeekDown = this.handleSeekDown.bind(this)
-    this.handleSeekUp = this.handleSeekUp.bind(this)
-    this.handleSeekDrag = this.handleSeekDrag.bind(this)
-    this.handleJumpSeek = this.handleJumpSeek.bind(this)
-    this.handleJumpVolume = this.handleJumpVolume.bind(this)
-    this.handleVolumeMouseover = this.handleVolumeMouseover.bind(this)
-    this.handleVolumeWheel = this.handleVolumeWheel.bind(this)
-    this.handleVolumeMouseout = this.handleVolumeMouseout.bind(this)
+  state = {
+    isPlaying: false,
+    volume: 0.25,
+    muted: false,
+    repeat: false,
+    shuffle: false,
+    currentTime: 0,
+    duration: 0,
+    isSeeking: false,
+    seekStartXDefault: 0,
+    volumeStartX: 0,
   }
 
   componentDidMount() {
@@ -43,26 +26,26 @@ class Player extends Component {
     playerNode.addEventListener('ended', this.handleEnded)
     document.addEventListener('keydown', this.handleKeypress)
     this.checkIfPlayerShouldPlay()
-    let seekCont = document.querySelectorAll('.player-seek-container')[0]
+    const seekCont = document.querySelector('.player-seek-container')
     this.setState({ seekStartXDefault: seekCont.offsetLeft })
-    let volumeCont = document.querySelectorAll('.player-controls-volumebar-container')[0]
+    const volumeCont = document.querySelector('.player-controls-volumebar-container')
     this.setState({ volumeStartX: volumeCont.parentNode.offsetLeft })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
     playerNode.removeEventListener('loadedmetadata', null, false)
     playerNode.removeEventListener('timeupdate', null, false)
     playerNode.removeEventListener('ended', null, false)
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
     playerNode.volume = this.state.volume
     this.checkIfPlayerShouldPlay()
   }
 
-  checkIfPlayerShouldPlay () {
+  checkIfPlayerShouldPlay() {
     const { isPlaying } = this.props.player
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
     if (isPlaying && playerNode.currentTime === 0) {
@@ -70,29 +53,30 @@ class Player extends Component {
     }
   }
 
-  handleLoadedMetaData () {
+  handleLoadedMetaData = () => {
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
     const duration = Math.floor(playerNode.duration)
     this.setState({
-      duration: duration
+      duration,
     })
   }
 
-  handleTimeUpdate () {
-    if (this.state.isSeeking === true) {
+  handleTimeUpdate = () => {
+    const { isSeeking, currentTime } = this.state
+    if (isSeeking) {
       return
     }
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
-    let currentTime = Math.floor(playerNode.currentTime)
-    if (currentTime !== this.state.currentTime) {
+    const playerCurrentTime = Math.floor(playerNode.currentTime)
+    if (playerCurrentTime !== currentTime) {
       this.setState({
-        currentTime: currentTime
+        currentTime,
       })
     }
   }
 
-  handleEnded () {
-    if (this.state.repeat === true) {
+  handleEnded = () => {
+    if (this.state.repeat) {
       const playerNode = ReactDOM.findDOMNode(this.refs.player)
       playerNode.currentTime = 0
     } else {
@@ -100,31 +84,29 @@ class Player extends Component {
     }
   }
 
-  toggleMusic () {
-    const { dispatch } = this.props
+  toggleMusic = () => {
     const { isPlaying } = this.props.player
     const playerNode = ReactDOM.findDOMNode(this.refs.player)
     isPlaying ? playerNode.pause() : playerNode.play()
-    dispatch(togglePlayer())
+    this.props.togglePlayer()
   }
 
-  previousSong () {
-    const { dispatch } = this.props
+  previousSong = () => {
     const { currentSongIndex } = this.props.player
-    let newSongIndex = ((currentSongIndex - 1) >= 0) ? currentSongIndex - 1 : 0
-    dispatch(setCurrentSong(newSongIndex))
+    const newSongIndex = currentSongIndex - 1 >= 0 ? currentSongIndex - 1 : 0
+    this.props.setCurrentSong(newSongIndex)
   }
 
-  nextSong () {
-    const { dispatch, playlists } = this.props
+  nextSong = () => {
+    const { playlists } = this.props
     const { currentSongIndex, currentPlaylist } = this.props.player
-    let maxPlaylistLength = playlists[currentPlaylist].songs.length - 1
-    let newSongIndex = ((currentSongIndex + 1) >= maxPlaylistLength) ? maxPlaylistLength : currentSongIndex + 1
-    dispatch(setCurrentSong(newSongIndex))
+    const maxPlaylistLength = playlists[currentPlaylist].songs.length - 1
+    const newSongIndex = currentSongIndex + 1 >= maxPlaylistLength ? maxPlaylistLength : currentSongIndex + 1
+    this.props.setCurrentSong(newSongIndex)
   }
 
-  handleKeypress (e) {
-    let isInInput = e.target.tagName.match(/input/i)
+  handleKeypress = e => {
+    const isInInput = e.target.tagName.match(/input/i)
     //  176: Next; 177: Prev; 178: Stop; 179: Play/pause
     if (!isInInput) {
       switch (e.keyCode) {
@@ -147,52 +129,44 @@ class Player extends Component {
     }
   }
 
-  handleJumpSeek (e) {
+  handleJumpSeek = e => {
     const audioNode = ReactDOM.findDOMNode(this.refs.player)
     const maxWidth = ReactDOM.findDOMNode(this.refs.seekbarEmpty).clientWidth
-    let newPosition = ((e.clientX - this.state.seekStartXDefault) / maxWidth) * Math.floor(audioNode.duration)
+    const newPosition = ((e.clientX - this.state.seekStartXDefault) / maxWidth) * Math.floor(audioNode.duration)
     audioNode.currentTime = newPosition
   }
 
-  handleJumpVolume (e) {
+  handleJumpVolume = e => {
     const audioNode = ReactDOM.findDOMNode(this.refs.player)
     const maxWidth = ReactDOM.findDOMNode(this.refs.volumebarEmpty).clientWidth
-    let newVolume = ((e.clientX - this.state.volumeStartX) / maxWidth)
+    const newVolume = (e.clientX - this.state.volumeStartX) / maxWidth
     audioNode.volume = +newVolume.toFixed(2)
     this.setState({ volume: +newVolume.toFixed(2) })
     console.log('Jump volume:', +newVolume.toFixed(2))
   }
 
-  addSeekingMouseListeners () {
-    let seekbar = ReactDOM.findDOMNode(this.refs.seekbar)
-    let seekHandle = ReactDOM.findDOMNode(this.refs.seekHandle)
-    seekbar.addEventListener('mousemove', this.handleSeekDrag)
-    seekbar.addEventListener('mouseup', this.handleSeekUp)
-    seekHandle.addEventListener('mousemove', this.handleSeekDrag)
-    seekHandle.addEventListener('mouseup', this.handleSeekUp)
+  addSeekingMouseListeners() {
+    document.addEventListener('mousemove', this.handleSeekDrag)
+    document.addEventListener('mouseup', this.handleSeekUp)
   }
 
-  removeSeekingMouseListeners () {
-    let seekbar = ReactDOM.findDOMNode(this.refs.seekbar)
-    let seekHandle = ReactDOM.findDOMNode(this.refs.seekHandle)
-    seekbar.removeEventListener('mousemove', this.handleSeekDrag, false)
-    seekbar.removeEventListener('mouseup', this.handleSeekUp, false)
-    seekHandle.removeEventListener('mousemove', this.handleSeekDrag, false)
-    seekHandle.removeEventListener('mouseup', this.handleSeekUp, false)
+  removeSeekingMouseListeners() {
+    document.removeEventListener('mousemove', this.handleSeekDrag, false)
+    document.removeEventListener('mouseup', this.handleSeekUp, false)
   }
 
-  handleSeekDown (e) {
+  handleSeekDown = e => {
     e.stopPropagation()
     this.addSeekingMouseListeners()
     this.setState({ isSeeking: true })
   }
 
-  handleSeekDrag (e) {
+  handleSeekDrag = e => {
     e.stopPropagation()
-    let maxWidth = ReactDOM.findDOMNode(this.refs.seekbarEmpty).clientWidth
-    let curWidthPercent = (e.clientX - this.state.seekStartXDefault) / maxWidth * 100
-    let seekbar = ReactDOM.findDOMNode(this.refs.seekbar)
-    let seekHandle = ReactDOM.findDOMNode(this.refs.seekHandle)
+    const maxWidth = ReactDOM.findDOMNode(this.refs.seekbarEmpty).clientWidth
+    let curWidthPercent = ((e.clientX - this.state.seekStartXDefault) / maxWidth) * 100
+    const seekbar = ReactDOM.findDOMNode(this.refs.seekbar)
+    const seekHandle = ReactDOM.findDOMNode(this.refs.seekHandle)
     if (curWidthPercent > 100) {
       curWidthPercent = 100
     }
@@ -203,23 +177,23 @@ class Player extends Component {
     seekHandle.attributes.style.value = `left: ${+curWidthPercent}%`
   }
 
-  handleSeekUp (e) {
+  handleSeekUp = e => {
     e.preventDefault()
     e.stopPropagation()
-    // handleJumpSeek takes care of setting correct currentTime on audio
+    this.handleJumpSeek(e)
     this.removeSeekingMouseListeners()
     this.setState({ isSeeking: false })
   }
 
-  handleVolumeMouseover (e) {
-    let volumebarCont = ReactDOM.findDOMNode(this.refs.volumebarEmpty)
+  handleVolumeMouseover = e => {
+    const volumebarCont = ReactDOM.findDOMNode(this.refs.volumebarEmpty)
     volumebarCont.addEventListener('wheel', this.handleVolumeWheel)
     volumebarCont.addEventListener('mouseout', this.handleVolumeMouseout)
   }
 
-  handleVolumeWheel (e) {
+  handleVolumeWheel = e => {
     e.preventDefault()
-    let volumeDiff = -e.deltaY / 10000 * 5
+    const volumeDiff = (-e.deltaY / 10000) * 5
     let newVolume = this.state.volume + volumeDiff
     if (newVolume > 1) {
       newVolume = 1
@@ -231,20 +205,19 @@ class Player extends Component {
     this.setState({ volume: newVolume })
   }
 
-  handleVolumeMouseout (e) {
-    let volumebarCont = ReactDOM.findDOMNode(this.refs.volumebarEmpty)
+  handleVolumeMouseout = e => {
+    const volumebarCont = ReactDOM.findDOMNode(this.refs.volumebarEmpty)
     volumebarCont.removeEventListener('wheel', this.handleVolumeWheel, false)
     volumebarCont.removeEventListener('mouseout', this.handleVolumeMouseout, false)
   }
 
-  toggleRepeat () {
+  toggleRepeat = () => {
     this.setState({
-      repeat: !this.state.repeat
+      repeat: !this.state.repeat,
     })
   }
 
-
-  render () {
+  render() {
     const { songs, playlists, player } = this.props
     const { isPlaying } = this.props.player
     const playingSongId = playlists[player.currentPlaylist].songs[player.currentSongIndex]
@@ -253,64 +226,52 @@ class Player extends Component {
     const curVolume = this.state.volume * 100
 
     return (
-      <div className='player'>
-        <audio
-          ref='player'
-          src={composeSongStreamURL(curSong.stream_url)}>
-        </audio>
-        <div
-          className='player-songIcon'
-          style={{'backgroundImage': `url(${composePlayerSongImageURL(curSong.artwork_url)})`}} />
-        <div className='player-songTitle'>
-          {curSong.title}
-        </div>
-        <div className='player-seek-container'>
-          <div onClick={this.handleJumpSeek} ref='seekbarEmpty'className='player-seek-bar-empty'>
+      <div className="player" ref="playerContainer">
+        <audio ref="player" src={composeSongStreamURL(curSong.stream_url)} />
+        <div className="player-songIcon" style={{ backgroundImage: `url(${composePlayerSongImageURL(curSong.artwork_url)})` }} />
+        <div className="player-songTitle">{curSong.title}</div>
+        <div className="player-seek-container">
+          <div onClick={this.handleJumpSeek} ref="seekbarEmpty" className="player-seek-bar-empty">
+            <div ref="seekbar" className="player-seek-bar-filled" style={{ width: `${curWidth}%` }} />
             <div
-              ref='seekbar'
-              className='player-seek-bar-filled'
-              style={{width: `${curWidth}%`}} />
-            <div
-              ref='seekHandle'
+              ref="seekHandle"
               onMouseDown={this.handleSeekDown}
-              className='player-seek-handle-div'
-              style={{left: `${curWidth}%`}} />
+              className="player-seek-handle-div"
+              style={{ left: `${curWidth}%` }}
+            />
           </div>
         </div>
-        <div className='player-duration'>
+        <div className="player-duration">
           {formatPlayerDuration(this.state.currentTime)} / {formatPlayerDuration(this.state.duration)}
         </div>
-        <div className='player-controls'>
-          <div className='player-controls-backward' onClick={this.previousSong}>
-            <span className='glyphicon glyphicon-step-backward'></span>
+        <div className="player-controls">
+          <div className="player-controls-backward" onClick={this.previousSong}>
+            <span className="glyphicon glyphicon-step-backward" />
           </div>
-          <div className='player-controls-toggle' onClick={this.toggleMusic}>
-            {isPlaying
-              ? <span style={{color: 'greenyellow'}}
-                className='glyphicon glyphicon-pause'></span>
-              : <span className='glyphicon glyphicon-play'></span>}
+          <div className="player-controls-toggle" onClick={this.toggleMusic}>
+            {isPlaying ? (
+              <span style={{ color: 'greenyellow' }} className="glyphicon glyphicon-pause" />
+            ) : (
+              <span className="glyphicon glyphicon-play" />
+            )}
           </div>
-          <div className='player-controls-forward' onClick={this.nextSong}>
-            <span className='glyphicon glyphicon-step-forward'></span>
+          <div className="player-controls-forward" onClick={this.nextSong}>
+            <span className="glyphicon glyphicon-step-forward" />
           </div>
         </div>
-        <div className='player-controls-volumeicon'>
-          <span className='glyphicon glyphicon-volume-up'></span>
+        <div className="player-controls-volumeicon">
+          <span className="glyphicon glyphicon-volume-up" />
         </div>
-        <div className='player-controls-volume'>
-          <div onMouseOver={this.handleVolumeMouseover} ref='volumebarEmpty' className='player-controls-volumebar-container'>
-            <div onClick={this.handleJumpVolume} className='player-controls-volumebar-empty'>
-              <div ref='volumebar'
-                style={{width: `${curVolume}%`}}
-                className='player-controls-volumebar-filled' />
-              <div ref='volumehandle'
-                style={{left: `${curVolume}%`}}
-                className='player-controls-volumebar-handle' />
+        <div className="player-controls-volume">
+          <div onMouseOver={this.handleVolumeMouseover} ref="volumebarEmpty" className="player-controls-volumebar-container">
+            <div onClick={this.handleJumpVolume} className="player-controls-volumebar-empty">
+              <div ref="volumebar" style={{ width: `${curVolume}%` }} className="player-controls-volumebar-filled" />
+              <div ref="volumehandle" style={{ left: `${curVolume}%` }} className="player-controls-volumebar-handle" />
             </div>
           </div>
-          <div className='player-controls-options'>
-            <div className='player-controls-options-repeat' onClick={this.toggleRepeat}>
-              <span style={{color: `${this.state.repeat ? 'greenyellow' : 'white'}`}} className='glyphicon glyphicon-retweet'></span>
+          <div className="player-controls-options">
+            <div className="player-controls-options-repeat" onClick={this.toggleRepeat}>
+              <span style={{ color: `${this.state.repeat ? 'greenyellow' : 'white'}` }} className="glyphicon glyphicon-retweet" />
             </div>
           </div>
         </div>
@@ -318,4 +279,27 @@ class Player extends Component {
     )
   }
 }
-export default Player
+
+const mapStateToProps = state => {
+  const { songs, users } = state.entities
+  const { player, playlists } = state
+  const { environment } = state
+  const searchString = state.router.location.search || '?q=chill&time=7'
+  const parsedLocation = parseSearch(searchString)
+  const timeframe = parsedLocation[1]
+  const playlist = parsedLocation[0] + timeframe
+  return {
+    environment,
+    songs,
+    users,
+    playlists,
+    player,
+    playlist,
+    timeframe,
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { togglePlayer, setCurrentSong }
+)(Player)

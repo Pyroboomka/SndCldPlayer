@@ -7,12 +7,7 @@ import { changeTimeframe } from '../actions/playlist'
 const TIMEFRAMES = [ 7, 14, 30, 90 ]
 
 class Navigation extends Component {
-  constructor(props) {
-    super(props)
-    this.handleInputChange = this.handleInputChange.bind(this)
-  }
-
-  handleInputChange(e) {
+  handleInputChange = (e) => {
     if (e.charCode === 13) {
       const { timeframe } = this.props
       const tag = e.currentTarget.value.trim()

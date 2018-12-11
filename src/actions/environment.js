@@ -1,5 +1,5 @@
 export const SET_WIDTH = 'SET_WIDTH'
-export const UPDATE_ENVIRNOMENT = 'UPDATE_ENVIRNOMENT'
+export const UPDATE_ENVIRONMENT = 'UPDATE_ENVIRONMENT'
 
 export function setWidth(width) {
   return {
@@ -10,7 +10,7 @@ export function setWidth(width) {
 
 export function updateEnvironment(width, height) {
   return {
-    type: UPDATE_ENVIRNOMENT,
+    type: UPDATE_ENVIRONMENT,
     payload: {
       width,
       height,

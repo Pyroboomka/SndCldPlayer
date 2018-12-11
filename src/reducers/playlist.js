@@ -20,7 +20,7 @@ function playlist(state = initialState, action) {
       return Object.assign({}, state, {
         isFetching: false,
         songs: [...state.songs, ...action.songsIDs],
-        next_href: action.nextHref
+        next_href: action.nextHref,
       })
     default:
       return state

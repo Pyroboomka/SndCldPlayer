@@ -12,14 +12,14 @@ class Song extends Component {
   componentDidMount() {
     const { currentSongIndex, currentPlaylist, isPlaying } = this.props.player
     const { songData, playlistSongs, playlist } = this.props
-    const isSongPlaying = (songData.id === playlistSongs[currentSongIndex]) && (currentPlaylist === playlist) && (isPlaying)
+    const isSongPlaying = songData.id === playlistSongs[currentSongIndex] && currentPlaylist === playlist && isPlaying
     this.setState({ isSongPlaying })
   }
 
   checkIsPlaying(props) {
     const { currentSongIndex, currentPlaylist, isPlaying } = props.player
     const { songData, playlistSongs, playlist } = props
-    const newisPlaying = (songData.id === playlistSongs[currentSongIndex]) && (currentPlaylist === playlist) && (isPlaying)
+    const newisPlaying = songData.id === playlistSongs[currentSongIndex] && currentPlaylist === playlist && isPlaying
     this.setState({ isPlaying: newisPlaying })
   }
 
@@ -39,7 +39,7 @@ class Song extends Component {
 
   render() {
     const { songData, userData, player, playlistSongs, playlist } = this.props
-    const isBorderActive = (playlistSongs.indexOf(songData.id) === player.currentSongIndex) && (player.currentPlaylist === playlist)
+    const isBorderActive = playlistSongs.indexOf(songData.id) === player.currentSongIndex && player.currentPlaylist === playlist
     const { artwork_url, title, likes_count, comment_count, playback_count, description } = songData
     const { username } = userData
     const datum = {
@@ -57,7 +57,7 @@ class Song extends Component {
         isBorderActive={isBorderActive}
         datum={datum}
         toggleSong={this.toggleSong}
-       />
+      />
     )
   }
 }
@@ -74,5 +74,7 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { startPlayingSong, togglePlayer})(Song)
-
+export default connect(
+  mapStateToProps,
+  { startPlayingSong, togglePlayer }
+)(Song)

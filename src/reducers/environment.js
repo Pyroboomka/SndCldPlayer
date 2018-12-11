@@ -1,17 +1,14 @@
-import { UPDATE_ENVIRNOMENT } from '../actions/environment'
+import { UPDATE_ENVIRONMENT } from '../actions/environment'
 
 const initialState = {
   width: 0,
   height: 0,
 }
 
-function environment(state = initialState, action) {
-  switch (action.type) {
-    case UPDATE_ENVIRNOMENT:
-      return { ...state,
-        width: action.payload.width,
-        height: action.payload.height,
-       }
+function environment(state = initialState, { type, payload }) {
+  switch (type) {
+    case UPDATE_ENVIRONMENT:
+      return { ...state, width: payload.width, height: payload.height }
     default:
       return state
   }
