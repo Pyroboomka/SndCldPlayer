@@ -62,6 +62,16 @@ export const getSongsGrid = createSelector(
   }
 )
 
+export const getSongsList = createSelector(
+  [getPlaylists, displayedPlaylist],
+  (playlists, playlist) => {
+    if (!playlists[playlist]) {
+      return []
+    }
+    return playlists[playlist].songs
+  }
+)
+
 export const getNextHref = createSelector(
   [getPlaylists, displayedPlaylist],
   (playlists, playlist) => playlists[playlist] ? playlists[playlist].next_href : undefined

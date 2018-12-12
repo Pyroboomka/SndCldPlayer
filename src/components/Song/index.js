@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Spring } from 'react-spring'
 import SongComponent from './SongComponent'
 import { getSongData, getUserData } from '../../reducers/selectors'
 import { startPlayingSong, togglePlayer } from '../../actions/player'
@@ -52,12 +53,18 @@ class Song extends Component {
       username,
     }
     return (
-      <SongComponent
-        isSongPlaying={isBorderActive && player.isPlaying}
-        isBorderActive={isBorderActive}
-        datum={datum}
-        toggleSong={this.toggleSong}
-      />
+      <Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+      {({ opacity }) => (
+        <SongComponent
+          opacity={opacity}
+          isSongPlaying={isBorderActive && player.isPlaying}
+          isBorderActive={isBorderActive}
+          datum={datum}
+          toggleSong={this.toggleSong}
+        />
+      )
+      }
+      </Spring>
     )
   }
 }

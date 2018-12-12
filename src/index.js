@@ -7,7 +7,7 @@ import './index.css'
 import 'react-virtualized/styles.css';
 import { history, configureStore } from './store/configureStore'
 
-import App from './containers/App'
+import App from './containers/App/App'
 
 const store = configureStore()
 

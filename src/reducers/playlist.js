@@ -35,7 +35,7 @@ export default function playlists(state = initialPlaylistsState, action) {
   switch (action.type) {
     case RECEIVE_PLAYLIST:
       return Object.assign({}, state, {
-        [action.tag]: playlist(state[action.tag], action)
+        [action.tag]: playlist(state[action.tag], action),
       })
     case REQUEST_PLAYLIST:
       return Object.assign({}, state, {

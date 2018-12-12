@@ -4,9 +4,9 @@ import './styles.css'
 
 class SongComponent extends Component {
   render() {
-    const { isBorderActive, isSongPlaying, datum } = this.props
+    const { isBorderActive, isSongPlaying, datum, opacity } = this.props
     return (
-      <div className={'songCard ' + (isSongPlaying || isBorderActive ? 'activeSong' : '')}>
+      <div className={'songCard ' + (isSongPlaying || isBorderActive ? 'activeSong' : '')} style={{ opacity }}>
         <CoverWithPlaybutton
           artwork_url={datum.artwork_url}
           isSongPlaying={isSongPlaying}
